@@ -28,8 +28,8 @@ type productOrm struct {
 func (p *productOrm) Search(searchQuery string, postCode string) ([]map[string]interface{}, error) {
 	var result []map[string]interface{}
 
-	query := `SELECT p.id AS id, p.name AS ProductName, p.price AS Price, p.rating AS Rating, p.total_sales AS TotalSales, p.product_image_url AS ProductImageURL, s.name AS SellerName, s.city AS SellerCity, 
-			IF (p.is_bebas_ongkir, MIN(p.weight * ssc.coef_weight + ssc.base_price - 10000), MIN(p.weight * ssc.coef_weight + ssc.base_price))  AS ShippingCost
+	query := `SELECT p.id AS id, p.name AS ProductName, p.price AS Price, TRUNCATE(p.rating, 1) AS Rating, p.total_sales AS TotalSales, p.product_image_url AS ProductImageURL, s.name AS SellerName, s.city AS SellerCity, 
+			IF (p.is_bebas_ongkir, TRUNCATE(MIN(p.weight * ssc.coef_weight + ssc.base_price - 10000), 0), TRUNCATE(MIN(p.weight * ssc.coef_weight + ssc.base_price), 0))  AS ShippingCost
 			FROM products AS p
 			INNER JOIN sellers AS s ON p.seller_id = s.id
 			INNER JOIN courier_cost_mappings AS ssc ON s.postcode = ssc.postcode_city_source AND ssc.postcode_city_destination = ?
