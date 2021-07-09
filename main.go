@@ -56,11 +56,12 @@ func seed(db *gorm.DB) {
 			product := &pgsql.Product{
 				Name:            "Sepatu " + strconv.Itoa(i*j),
 				Price:           rand.Intn(350000),
-				Rating:          3.5,
+				Rating:          randomdata.Decimal(1, 5),
 				TotalSales:      rand.Intn(1200),
-				Weight:          1,
+				Weight:          randomdata.Decimal(1, 10),
 				ProductImageURL: "https://cdn-3.tstatic.net/jualbeli/img/2020/7/2353564/1-26055081-Sepatu-Converse-CT-I-ALL-Star-OX-Black-Original-BNIB-Vietnam---Madiun.jpg",
 				SellerID:        i,
+				IsBebasOngkir:   randomdata.Boolean(),
 			}
 			products = append(products, product)
 		}
@@ -74,7 +75,7 @@ func seed(db *gorm.DB) {
 			Latitude:        "",
 			Longitude:       "",
 			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
-			Badge:           "https://pbs.twimg.com/media/E2txKPEUcAEyjMB.jpg",
+			Badge:           rand.Intn(3),
 			Product:         products,
 		}
 
@@ -107,8 +108,8 @@ func seed(db *gorm.DB) {
 					ServiceName:             randomdata.SillyName(),
 					PostcodeCitySource:      "1760" + strconv.Itoa(j),
 					PostcodeCityDestination: "1761" + strconv.Itoa(k),
-					BasePrice:               randomdata.Number(9999, 50000),
-					CoefWeight:              randomdata.Decimal(9999, 20000),
+					BasePrice:               randomdata.Number(9999, 100000),
+					CoefWeight:              randomdata.Number(5000, 20000),
 				}
 				courierCostMappings = append(courierCostMappings, courierCostMapping)
 			}

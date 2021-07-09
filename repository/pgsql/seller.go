@@ -10,6 +10,6 @@ type Seller struct {
 	Latitude        string     `json:"latitude"`
 	Longitude       string     `json:"longitude"`
 	ProfileImageURL string     `json:"profile_image_url"`
-	Badge           string     `json:"badge"`
+	Badge           int        `json:"badge"`
 	Product         []*Product `json:"product"`
 }
