@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/rs/cors"
 	"math/rand"
 	"net/http"
 	"os"
@@ -255,7 +256,10 @@ func main() {
 	}
 
 	r := mux.NewRouter()
-
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowCredentials: true,
+	})
 	r.HandleFunc("/api/v1/health", homePage).Methods("GET")
 
 	// Init
@@ -264,5 +268,6 @@ func main() {
 	delivery.NewSearchPageHandler(r, searchPageUsecase)
 
 	fmt.Print("Running...")
-	_ = http.ListenAndServe(":9090", r)
+	handler := c.Handler(r)
+	_ = http.ListenAndServe(":9090", handler)
 }
