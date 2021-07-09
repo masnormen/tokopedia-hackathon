@@ -6,9 +6,9 @@ import axios from 'axios';
 import { Checkbox } from '../../components';
 import { useHistory } from 'react-router';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
+import { postCodeAtom, sortAtom } from '../../store/store';
+import { useAtom } from 'jotai';
+import { queryAtom } from '../../store/store';
 
 const Item = ({ title, children, ...rest }) => (
   <AccordionItem
@@ -28,22 +28,24 @@ const Item = ({ title, children, ...rest }) => (
 );
 
 export const Search = () => {
-  const query = useQuery().get('q');
-  const sort = useQuery().get('sort');
-  const from = useQuery().get('from');
+  const [postCode, setPostCode] = useAtom(postCodeAtom);
+  const [query] = useAtom(queryAtom);
+  const [sort, setSort] = useAtom(sortAtom);
   const history = useHistory();
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     axios
-      .get('https://run.mocky.io/v3/ad458ff0-224b-4c4b-b94e-7a73ec184f06')
+      .get(
+        `http://localhost:9090/api/v1/search?q=${query}&from=${postCode}&sort=${sort}`
+      )
       .then((reply) => {
         if (reply.data.success) {
           setProducts(reply.data.data);
         }
       });
-  }, []);
+  }, [sort, query, postCode]);
 
   return (
     <div className="flex flex-row flex-grow w-full h-full px-12 py-10 space-x-10 bg-white">
@@ -112,17 +114,16 @@ export const Search = () => {
         <div className="flex flex-row w-full">
           <div className="flex flex-row w-full items-center justify-between">
             <div className="text-xs">
-              Menampilkan 1 - 60 barang dari total 12.6jt+ untuk sepatu
+              Menampilkan 1 - {products && products.length} barang dari total
+              12.6jt+ untuk "sepatu"
             </div>
             <div className="flex flex-row items-center space-x-2">
               <div className="text-xs font-bold">Urutkan:</div>
-              <div className="relative w-48 py-2 pl-3 pr-3 text-left bg-white rounded-lg border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
+              <div className="relative w-56 py-2 pl-3 pr-3 text-left bg-white rounded-lg border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
                 <select
                   className="w-full focus:outline-none focus:ring-0"
                   onChange={(e) => {
-                    history.push({
-                      search: `?from=${from}&q=${query}&sort=${e.target.value}`,
-                    });
+                    setSort(e.target.value);
                   }}
                 >
                   <option value="default">Paling Sesuai</option>

@@ -1,12 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useAtom } from 'jotai';
 
-import { searchFocusAtom } from '../store/store';
+import {
+  searchFocusAtom,
+  postCodeAtom,
+  sortAtom,
+  queryAtom,
+} from '../store/store';
 
 import { NavbarButton } from '../components';
 
 export const Navbar = () => {
   const [, setSearchFocus] = useAtom(searchFocusAtom);
+  const [postCode, setPostCode] = useAtom(postCodeAtom);
+  const [query, setQuery] = useAtom(queryAtom);
+  const [sort] = useAtom(sortAtom);
 
   return (
     <nav className="fixed top-0 w-full md:h-50 z-50 flex flex-col content-center justify-center py-2 bg-white shadow-lg">
@@ -65,8 +73,12 @@ export const Navbar = () => {
             name="q"
             onFocus={() => setSearchFocus(true)}
             onBlur={() => setSearchFocus(false)}
+            onChange={(e) => setQuery(e.target.value)}
+            value={query}
             type="text"
           />
+          <input name="sort" value={sort} hidden />
+          <input name="from" value={postCode} hidden />
           <button
             aria-label="Tombol pencarian"
             type="submit"
@@ -133,11 +145,22 @@ export const Navbar = () => {
               d="M11.5 21.87a1 1 0 00.5.13 1 1 0 00.514-.138C12.974 21.587 20 17.399 20 10a7.909 7.909 0 00-8-8 7.91 7.91 0 00-8 8c0 7.399 7.025 11.587 7.486 11.862l.014.008zM9.694 4.44A5.94 5.94 0 0112 4a5.94 5.94 0 016 6c0 5.28-4.48 8.81-6 9.81-1.52-1.03-6-4.51-6-9.81a5.94 5.94 0 013.694-5.56zm.084 8.886a4 4 0 104.444-6.652 4 4 0 00-4.444 6.652zm1.11-4.989a2 2 0 112.223 3.326 2 2 0 01-2.222-3.326z"
             />
           </svg>
-          <span className="flex flex-row space-x-1 items-center text-xs text-gray-700 hover:text-xgreen">
+          <button
+            onClick={() => {
+              postCode === '17612'
+                ? setPostCode('36138')
+                : setPostCode('17612');
+            }}
+            className="flex flex-row space-x-1 items-center text-xs text-gray-700 hover:text-xgreen"
+          >
             <span>Dikirim ke</span>
-            <span className="font-bold">Alamat Kos Malang Nourman Hajar</span>
+            <span className="font-bold">
+              {postCode === '17612'
+                ? 'Bekasi, Jawa Barat'
+                : 'Kota Jambi, Jambi'}
+            </span>
             <i className="icon-navbar arrowdown" />
-          </span>
+          </button>
         </button>
       </div>
     </nav>
