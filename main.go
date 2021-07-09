@@ -70,21 +70,21 @@ func seed(db *gorm.DB) {
 			Province:        "Jawa Barat",
 			City:            "Bekasi",
 			Address:         "Jl Candrabaga " + index,
-			Postcode:        randomdata.PostalCode("SE"),
+			Postcode:        "1760" + strconv.Itoa(i),
 			Latitude:        "",
 			Longitude:       "",
 			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
 			Badge:           "https://pbs.twimg.com/media/E2txKPEUcAEyjMB.jpg",
 			Product:         products,
 		}
+
 		courierCostMappings := make([]*pgsql.CourierCostMapping, 0)
-		for j := 0; j < 10; j++ {
+		for j := 1; j < 10; j++ {
 			CourierCostMapping := &pgsql.CourierCostMapping{
-				ID:                      j,
 				CourierID:               i,
 				ServiceName:             randomdata.SillyName(),
-				PostcodeCitySource:      randomdata.PostalCode("SE"),
-				PostcodeCityDestination: randomdata.PostalCode("SE"),
+				PostcodeCitySource:      "1760" + strconv.Itoa(j),
+				PostcodeCityDestination: "1761" + strconv.Itoa(j),
 				BasePrice:               randomdata.Number(10000, 50000),
 				CoefWeight:              randomdata.Decimal(10000, 20000),
 			}
@@ -101,7 +101,7 @@ func seed(db *gorm.DB) {
 			Province:        "Jawa Barat",
 			City:            "Bekasi",
 			Address:         "Jl Candrabaga " + index,
-			Postcode:        randomdata.PostalCode("SE"),
+			Postcode:        "1761" + strconv.Itoa(i),
 			Latitude:        "",
 			Longitude:       "",
 			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
