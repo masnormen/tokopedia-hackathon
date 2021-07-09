@@ -1,5 +1,14 @@
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Accordion, AccordionItem } from 'react-sanfona';
-import { Checkbox, Dropdown } from '../../components';
+import axios from 'axios';
+
+import { Checkbox } from '../../components';
+import { useHistory } from 'react-router';
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 const Item = ({ title, children, ...rest }) => (
   <AccordionItem
@@ -19,6 +28,23 @@ const Item = ({ title, children, ...rest }) => (
 );
 
 export const Search = () => {
+  const query = useQuery().get('q');
+  const sort = useQuery().get('sort');
+  const from = useQuery().get('from');
+  const history = useHistory();
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://run.mocky.io/v3/ad458ff0-224b-4c4b-b94e-7a73ec184f06')
+      .then((reply) => {
+        if (reply.data.success) {
+          setProducts(reply.data.data);
+        }
+      });
+  }, []);
+
   return (
     <div className="flex flex-row flex-grow w-full h-full px-12 py-10 space-x-10 bg-white">
       {/*Search filters*/}
@@ -69,7 +95,7 @@ export const Search = () => {
       </div>
 
       {/*Search result*/}
-      <div className="flex flex-col w-full space-y-8">
+      <div className="flex flex-col w-full space-y-6">
         {/*Produk & Toko Tab*/}
         <div className="flex flex-row w-full border-b border-gray-200">
           <button className="flex flex-row items-center px-5 py-3 border-b-4 border-xgreen space-x-2">
@@ -93,13 +119,18 @@ export const Search = () => {
               <div className="relative w-48 py-2 pl-3 pr-3 text-left bg-white rounded-lg border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
                 <select
                   className="w-full focus:outline-none focus:ring-0"
-                  onChange={() => false}
+                  onChange={(e) => {
+                    history.push({
+                      search: `?from=${from}&q=${query}&sort=${e.target.value}`,
+                    });
+                  }}
                 >
-                  <option value="red">Paling Sesuai</option>
-                  <option value="red">Ulasan</option>
-                  <option value="red">Terbaru</option>
-                  <option value="red">Harga Tertinggi</option>
-                  <option value="red">Harga Terendah</option>
+                  <option value="default">Paling Sesuai</option>
+                  <option value="ratings">Ulasan</option>
+                  <option value="newest">Terbaru</option>
+                  <option value="highestprice">Harga Tertinggi</option>
+                  <option value="lowestprice">Harga Terendah</option>
+                  <option value="lowesttco">Harga + Ongkir Terendah</option>
                 </select>
               </div>
             </div>
@@ -109,55 +140,64 @@ export const Search = () => {
         {/*Product card grid*/}
         <div className="flex flex-row w-full">
           <div className="flex flex-grow w-full flex-wrap">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 9, 6, 5, 5].map(() => (
-              <div className="group flex w-1/5 px-2 py-3 justify-center">
-                <div className="bg-white shadow-md cursor-pointer rounded">
-                  <img
-                    src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/6/5/3381e0d5-4922-4bc2-8c46-9f18fe017dea.jpg.webp?ect=4g"
-                    alt="product-image"
-                    className="rounded-t w-full"
-                  />
-                  <div className="p-3 space-y-2 rounded-b text-gray-700">
-                    <div
-                      className="text-xs truncate whitespace-pre-wrap"
-                      style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                      }}
-                    >
-                      SEPATU VENTELA PUBLIC BTS /BLACK OREO YELLOW MAROON GREY
-                      GREEN NAVY
-                    </div>
-                    <div className="text-sm font-bold">Rp149.900</div>
-                    <div className="inline-flex px-1.5 py-1 space-x-1 bg-purple-100 rounded-md text-xs text-purple-400 transform -translate-x-2 scale-90">
-                      <i className="icon-kurir" /> <span>mulai dari</span>{' '}
-                      <b> Rp9000</b>
-                    </div>
+            {products &&
+              products.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="group flex w-1/5 px-2 py-3 justify-center"
+                >
+                  <div className="bg-white shadow-md cursor-pointer rounded">
+                    <img
+                      src={item.ProductImageURL}
+                      alt="product-image"
+                      className="rounded-t w-full"
+                    />
+                    <div className="p-3 space-y-2 rounded-b text-gray-700">
+                      <div
+                        className="text-xs truncate whitespace-pre-wrap"
+                        style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                        }}
+                      >
+                        {item.ProductName}
+                        GREEN NAVY
+                      </div>
+                      <div className="text-sm font-bold">
+                        Rp{item.Price.toLocaleString('id-ID')}
+                      </div>
+                      <div className="inline-flex px-1.5 py-1 space-x-1 bg-purple-100 rounded-md text-xs text-purple-400 transform -translate-x-2 scale-90">
+                        <i className="icon-kurir" />
+                        <span>
+                          dari
+                          <b> Rp{item.ShippingCost.toLocaleString('id-ID')}</b>
+                        </span>
+                      </div>
 
-                    <div className="flex flex-row text-xs text-gray-500">
-                      <div className="flex flex-row group-hover:hidden">
-                        <i className="icon-power-merchant" />
-                        <div>Jakarta Barat</div>
+                      <div className="flex flex-row text-xs text-gray-500">
+                        <div className="flex flex-row group-hover:hidden">
+                          <i className="icon-power-merchant" />
+                          <div>{item.SellerCity}</div>
+                        </div>
+                        <div className="hidden flex-row group-hover:flex">
+                          <i className="icon-power-merchant" />
+                          <div>{item.SellerName}</div>
+                        </div>
                       </div>
-                      <div className="hidden flex-row group-hover:flex">
-                        <i className="icon-power-merchant" />
-                        <div>LAROCKING</div>
-                      </div>
-                    </div>
-                    <div className="flex flex-row text-gray-500 divide-x divide-gray-300">
-                      <div className="flex flex-row text-xs space-x-1 pr-2">
-                        <i className="icon-star" />
-                        <span>4.5</span>
-                      </div>
-                      <div className="flex flex-row text-xs space-x-1 pl-2">
-                        Terjual 64
+                      <div className="flex flex-row text-gray-500 divide-x divide-gray-300">
+                        <div className="flex flex-row text-xs space-x-1 pr-2">
+                          <i className="icon-star" />
+                          <span>{item.Rating}</span>
+                        </div>
+                        <div className="flex flex-row text-xs space-x-1 pl-2">
+                          Terjual {item.TotalSales}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
