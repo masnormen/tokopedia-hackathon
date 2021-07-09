@@ -119,9 +119,9 @@ export const Search = () => {
             </div>
             <div className="flex flex-row items-center space-x-2">
               <div className="text-xs font-bold">Urutkan:</div>
-              <div className="relative w-56 py-2 pl-3 pr-3 text-left bg-white rounded-lg border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
+              <div className="relative w-56 py-2 pl-3 pr-3 cursor-pointer text-left bg-white rounded-lg border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
                 <select
-                  className="w-full focus:outline-none focus:ring-0"
+                  className="w-full appearance-none cursor-pointer focus:outline-none focus:ring-0"
                   onChange={(e) => {
                     setSort(e.target.value);
                   }}
@@ -149,7 +149,7 @@ export const Search = () => {
                 >
                   <div className="bg-white shadow-md cursor-pointer rounded">
                     <img
-                      src={item.ProductImageURL}
+                      src={item.ProductImageURL.split('.webp')[0]}
                       alt="product-image"
                       className="rounded-t w-full"
                     />
