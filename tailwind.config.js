@@ -1,6 +1,9 @@
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
+    // fontSize: {
+    //   // tiny: '.5rem',
+    // },
     fontFamily: {
       sans: [
         'Open Sans',
@@ -21,6 +24,7 @@ module.exports = {
   },
   variants: {
     extend: {
+      display: ['group-hover'],
       textColor: ['disabled'],
       opacity: ['disabled'],
       pointerEvents: ['disabled'],

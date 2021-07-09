@@ -59,6 +59,7 @@
   vertical-align: middle;
   background-image: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/9527c778.svg);
 }
+
 .icon-product {
   width: 24px;
   height: 24px;
@@ -67,6 +68,7 @@
   background: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/a0e991a5.svg) center center / contain no-repeat;
   display: inline-block;
 }
+
 .icon-shop {
   width: 24px;
   height: 24px;
@@ -74,4 +76,53 @@
   margin: 0px;
   background: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/95b6947f.svg) center center / contain no-repeat;
   display: inline-block;
+}
+
+.icon-power-merchant {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  margin-right: 2px;
+  vertical-align: middle;
+  background-image: url(https://images.tokopedia.net/img/power_merchant_badge.png);
+}
+.icon-power-merchant-pro {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  margin-right: 2px;
+  vertical-align: middle;
+  background-image: url(https://images.tokopedia.net/img/goldmerchant/pm_activation/badge/PM%20Pro%20Small.png);
+}
+.icon-official-store {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  margin-right: 2px;
+  vertical-align: middle;
+  background-image: url(https://images.tokopedia.net/img/official_store_badge.png);
+}
+.icon-kurir {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  margin-right: 2px;
+  vertical-align: middle;
+  background-image: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/8dcc624f.svg);
 }
