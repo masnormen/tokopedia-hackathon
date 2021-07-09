@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"net/http"
+	"os"
+	"strconv"
+
+	"github.com/Pallinder/go-randomdata"
 	"github.com/gorilla/mux"
 	"github.com/masnormen/tokopedia-hackathon/delivery"
 	"github.com/masnormen/tokopedia-hackathon/repository/pgsql"
 	"github.com/masnormen/tokopedia-hackathon/usecase"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"math/rand"
-	"net/http"
-	"os"
-	"strconv"
 )
 
 func connectDB() *gorm.DB {
@@ -30,7 +32,6 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func migration(db *gorm.DB) error {
-	fmt.Println("Doing migration...")
 	err := db.AutoMigrate(
 		&pgsql.Buyer{},
 		&pgsql.Courier{},
@@ -42,6 +43,7 @@ func migration(db *gorm.DB) error {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Doing migration...")
 
 	return nil
 }
@@ -64,18 +66,49 @@ func seed(db *gorm.DB) {
 		}
 		seller := &pgsql.Seller{
 			ID:              i,
-			Name:            "Seller" + index,
+			Name:            randomdata.SillyName(),
 			Province:        "Jawa Barat",
 			City:            "Bekasi",
 			Address:         "Jl Candrabaga " + index,
-			Postcode:        "1760" + index,
+			Postcode:        randomdata.PostalCode("SE"),
 			Latitude:        "",
 			Longitude:       "",
 			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
 			Badge:           "https://pbs.twimg.com/media/E2txKPEUcAEyjMB.jpg",
 			Product:         products,
 		}
+		courierCostMappings := make([]*pgsql.CourierCostMapping, 0)
+		for j := 0; j < 10; j++ {
+			CourierCostMapping := &pgsql.CourierCostMapping{
+				ID:                      j,
+				CourierID:               i,
+				ServiceName:             randomdata.SillyName(),
+				PostcodeCitySource:      randomdata.PostalCode("SE"),
+				PostcodeCityDestination: randomdata.PostalCode("SE"),
+				BasePrice:               randomdata.Number(10000, 50000),
+				CoefWeight:              randomdata.Decimal(10000, 20000),
+			}
+			courierCostMappings = append(courierCostMappings, CourierCostMapping)
+		}
+		courier := &pgsql.Courier{
+			ID:                 i,
+			Name:               randomdata.SillyName(),
+			CourierCostMapping: courierCostMappings,
+		}
+		buyer := &pgsql.Buyer{
+			ID:              i,
+			Name:            randomdata.SillyName(),
+			Province:        "Jawa Barat",
+			City:            "Bekasi",
+			Address:         "Jl Candrabaga " + index,
+			Postcode:        randomdata.PostalCode("SE"),
+			Latitude:        "",
+			Longitude:       "",
+			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
+		}
 		db.Create(seller)
+		db.Create(courier)
+		db.Create(buyer)
 	}
 }
 
