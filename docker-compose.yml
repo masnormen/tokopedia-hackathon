@@ -1,0 +1,18 @@
+version: "3"
+services:
+  tco_postgres:
+    image: postgres
+    volumes:
+      - tco_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: tco
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
+
+volumes:
+  # This volume is located at /var/lib/docker/marketplace_db_data
+  # If you want to reset the DB's data, you might want to remove that file
+  tco_db_data:
+    driver: local
