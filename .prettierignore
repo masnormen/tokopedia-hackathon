@@ -1,0 +1,9 @@
+node_modules/
+/public/hot
+/public/storage
+/public/js/
+/public/css/
+/vendor
+
+# Ignore all PHP files:
+*.php

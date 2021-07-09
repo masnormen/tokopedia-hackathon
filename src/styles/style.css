@@ -1,0 +1,41 @@
+/* General Styles */
+.font-nunito {
+  font-family: "Nunito Sans", -apple-system, sans-serif;
+}
+
+/* Navbar Icons */
+.icon-navbar {
+  width: 20px;
+  height: 20px;
+  background-image: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/413cd754.svg);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+.icon-navbar.cart {
+  background-position: 0% 0%;
+}
+.icon-navbar.mail {
+  background-position: 20% 20%;
+}
+.icon-navbar.bell {
+  background-position: 40% 40%;
+}
+.icon-navbar.phone {
+  background-position: 60% 60%;
+}
+.icon-navbar.setting {
+  background-position: 80% 80%;
+}
+.icon-navbar.arrowdown {
+  background-position: 100% 100%;
+}
+.icon-search {
+  width: 20px;
+  height: 20px;
+  background-image: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/af2f34c3.svg);
+  background-size: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
