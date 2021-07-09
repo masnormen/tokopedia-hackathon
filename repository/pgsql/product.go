@@ -43,7 +43,7 @@ func (p *productOrm) Search(searchQuery string, postCode string, sort string) ([
 	case "lowesttco":
 		query = query + `ORDER BY (ShippingCost + p.price) ASC;`
 	default:
-		query = query + `ORDER BY (ShippingCost + p.price) ASC, total_sales DESC, rating DESC;`
+		query = query + `ORDER BY rating DESC, (ShippingCost + p.price) ASC, total_sales DESC;`
 	}
 
 	err := p.db.Raw(query, postCode, searchQuery).Scan(&result).Error

@@ -19,14 +19,16 @@ import (
 
 var arrayOfLink = []map[string]interface{}{
 	{
-		"images": "https://images.tokopedia.net/img/cache/200-square/product-1/2020/1/31/619071290/619071290_4cade089-de33-4add-95c1-6895e557a4c4_896_896.jpg.webp?ect=4g",
-		"name":   "[PREMIUM] SEPATU VANS OLD SCKOOL DT",
-		"city":   "depok",
+		"images":   "https://images.tokopedia.net/img/cache/200-square/product-1/2020/1/31/619071290/619071290_4cade089-de33-4add-95c1-6895e557a4c4_896_896.jpg.webp?ect=4g",
+		"name":     "[PREMIUM] SEPATU VANS OLD SCKOOL DT",
+		"city":     "Depok",
+		"postcode": "17601",
 	},
 	{
-		"images": "https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/1/27/62e7f29d-2b7b-413d-92bf-c70cd9b0b831.jpg.webp?ect=4g",
-		"name":   "Terbaru!!! Sepatu Pria Fashione Sport AIFF 720 Sepatu Pria Running Sep",
-		"city":   "bogor",
+		"images":   "https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/1/27/62e7f29d-2b7b-413d-92bf-c70cd9b0b831.jpg.webp?ect=4g",
+		"name":     "Terbaru!!! Sepatu Pria Fashione Sport AIFF 720 Sepatu Pria Running Sep",
+		"city":     "Bogor",
+		"postcode": "17602",
 	},
 	{
 		"images": "https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/6/23/642390c7-f340-4869-96bd-ab20458c8a22.jpg.webp?ect=4g",
@@ -135,6 +137,9 @@ var arrayOfLink = []map[string]interface{}{
 	},
 }
 
+var arrayOfPostcode = []string{"17601", "17602", "17603", "17604", "17605", "36131", "36132", "36133", "36134", "36135"}
+var arrayOfCity = []string{"Kota Bekasi", "Kab. Bekasi", "Jakarta Selatan", "Jakarta Pusat", "Jakarta Utara", "Kota Baru", "Alam Barajo", "Jambi Timur", "Pasar Jambi", "Pelayangan"}
+
 func connectDB() *gorm.DB {
 	dsn := "root:root@tcp(127.0.0.1:3307)/tco?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -187,10 +192,10 @@ func seed(db *gorm.DB) {
 		seller := &pgsql.Seller{
 			ID:              i,
 			Name:            randomdata.SillyName(),
-			Province:        "Jawa Barat",
-			City:            arrayOfLink[i]["city"].(string),
+			Province:        randomdata.ProvinceForCountry("62"),
+			City:            arrayOfCity[i-1],
 			Address:         "Jl Candrabaga " + index,
-			Postcode:        "1760" + strconv.Itoa(i),
+			Postcode:        arrayOfPostcode[i-1],
 			Latitude:        "",
 			Longitude:       "",
 			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
@@ -198,20 +203,34 @@ func seed(db *gorm.DB) {
 			Product:         products,
 		}
 
-		buyer := &pgsql.Buyer{
-			ID:              i,
-			Name:            randomdata.SillyName(),
-			Province:        "Jawa Barat",
-			City:            "Bekasi",
-			Address:         "Jl Candrabaga " + index,
-			Postcode:        "1761" + strconv.Itoa(i),
-			Latitude:        "",
-			Longitude:       "",
-			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
-		}
 		db.Create(seller)
-		db.Create(buyer)
 	}
+
+	buyer1 := &pgsql.Buyer{
+		ID:              1,
+		Name:            randomdata.SillyName(),
+		Province:        "Jawa Barat",
+		City:            "Bekasi",
+		Address:         "Jl Candrabaga",
+		Postcode:        "17612",
+		Latitude:        "",
+		Longitude:       "",
+		ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
+	}
+	db.Create(buyer1)
+
+	buyer2 := &pgsql.Buyer{
+		ID:              2,
+		Name:            randomdata.SillyName(),
+		Province:        "Jambi",
+		City:            "Kota Jambi",
+		Address:         "Jl Candrabaga",
+		Postcode:        "36138",
+		Latitude:        "",
+		Longitude:       "",
+		ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
+	}
+	db.Create(buyer2)
 
 	for i := 1; i < 10; i++ {
 		courier := &pgsql.Courier{
@@ -220,18 +239,49 @@ func seed(db *gorm.DB) {
 		}
 
 		courierCostMappings := make([]*pgsql.CourierCostMapping, 0)
-		for j := 1; j < 10; j++ {
-			for k := 1; k < 10; k++ {
-				courierCostMapping := &pgsql.CourierCostMapping{
-					CourierID:               j,
-					ServiceName:             randomdata.SillyName(),
-					PostcodeCitySource:      "1760" + strconv.Itoa(j),
-					PostcodeCityDestination: "1761" + strconv.Itoa(k),
-					BasePrice:               randomdata.Number(9999, 100000),
-					CoefWeight:              randomdata.Number(5000, 20000),
-				}
-				courierCostMappings = append(courierCostMappings, courierCostMapping)
+		for j := 0; j < 5; j++ {
+			courierCostMapping1 := &pgsql.CourierCostMapping{
+				CourierID:               i,
+				ServiceName:             randomdata.SillyName(),
+				PostcodeCitySource:      arrayOfPostcode[j],
+				PostcodeCityDestination: "17612",
+				BasePrice:               randomdata.Number(1000, 10000),
+				CoefWeight:              randomdata.Number(1000, 10000),
 			}
+			courierCostMappings = append(courierCostMappings, courierCostMapping1)
+
+			courierCostMapping2 := &pgsql.CourierCostMapping{
+				CourierID:               i,
+				ServiceName:             randomdata.SillyName(),
+				PostcodeCitySource:      arrayOfPostcode[j],
+				PostcodeCityDestination: "36138",
+				BasePrice:               randomdata.Number(30000, 100000),
+				CoefWeight:              randomdata.Number(5000, 20000),
+			}
+			courierCostMappings = append(courierCostMappings, courierCostMapping2)
+		}
+
+		for j := 5; j < 10; j++ {
+			courierCostMapping1 := &pgsql.CourierCostMapping{
+				CourierID:               i,
+				ServiceName:             randomdata.SillyName(),
+				PostcodeCitySource:      arrayOfPostcode[j],
+				PostcodeCityDestination: "17612",
+				BasePrice:               randomdata.Number(30000, 100000),
+				CoefWeight:              randomdata.Number(5000, 20000),
+			}
+			courierCostMappings = append(courierCostMappings, courierCostMapping1)
+
+			courierCostMapping2 := &pgsql.CourierCostMapping{
+				CourierID:               i,
+				ServiceName:             randomdata.SillyName(),
+				PostcodeCitySource:      arrayOfPostcode[j],
+				PostcodeCityDestination: "36138",
+				BasePrice:               randomdata.Number(1000, 10000),
+				CoefWeight:              randomdata.Number(1000, 10000),
+			}
+			courierCostMappings = append(courierCostMappings, courierCostMapping2)
+
 		}
 
 		courier.CourierCostMapping = courierCostMappings
