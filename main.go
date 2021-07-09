@@ -78,23 +78,6 @@ func seed(db *gorm.DB) {
 			Product:         products,
 		}
 
-		courierCostMappings := make([]*pgsql.CourierCostMapping, 0)
-		for j := 1; j < 10; j++ {
-			CourierCostMapping := &pgsql.CourierCostMapping{
-				CourierID:               i,
-				ServiceName:             randomdata.SillyName(),
-				PostcodeCitySource:      "1760" + strconv.Itoa(j),
-				PostcodeCityDestination: "1761" + strconv.Itoa(j),
-				BasePrice:               randomdata.Number(10000, 50000),
-				CoefWeight:              randomdata.Decimal(10000, 20000),
-			}
-			courierCostMappings = append(courierCostMappings, CourierCostMapping)
-		}
-		courier := &pgsql.Courier{
-			ID:                 i,
-			Name:               randomdata.SillyName(),
-			CourierCostMapping: courierCostMappings,
-		}
 		buyer := &pgsql.Buyer{
 			ID:              i,
 			Name:            randomdata.SillyName(),
@@ -107,9 +90,34 @@ func seed(db *gorm.DB) {
 			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
 		}
 		db.Create(seller)
-		db.Create(courier)
 		db.Create(buyer)
 	}
+
+	for i := 1; i < 10; i++ {
+		courier := &pgsql.Courier{
+			ID:   i,
+			Name: randomdata.SillyName(),
+		}
+
+		courierCostMappings := make([]*pgsql.CourierCostMapping, 0)
+		for j := 1; j < 10; j++ {
+			for k := 1; k < 10; k++ {
+				courierCostMapping := &pgsql.CourierCostMapping{
+					CourierID:               j,
+					ServiceName:             randomdata.SillyName(),
+					PostcodeCitySource:      "1760" + strconv.Itoa(j),
+					PostcodeCityDestination: "1761" + strconv.Itoa(k),
+					BasePrice:               randomdata.Number(9999, 50000),
+					CoefWeight:              randomdata.Decimal(9999, 20000),
+				}
+				courierCostMappings = append(courierCostMappings, courierCostMapping)
+			}
+		}
+
+		courier.CourierCostMapping = courierCostMappings
+		db.Create(courier)
+	}
+
 }
 
 func main() {
