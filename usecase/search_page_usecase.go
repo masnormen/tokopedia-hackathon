@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"fmt"
-	"github.com/masnormen/tokopedia-hackathon/repository/pgsql"
+	"github.com/masnormen/tokopedia-hackathon/repository/mysql"
 )
 
 type SearchPageUsecase interface {
@@ -11,7 +11,7 @@ type SearchPageUsecase interface {
 }
 
 type searchPageUsecase struct {
-	productOrm pgsql.ProductOrm
+	productOrm mysql.ProductOrm
 }
 
 func (s *searchPageUsecase) Search(searchQuery string, postCode string, sort string) ([]map[string]interface{}, error) {
@@ -28,6 +28,6 @@ func (s *searchPageUsecase) Sort() {
 	panic("implement me")
 }
 
-func NewSearchPageUsecase(productOrm pgsql.ProductOrm) SearchPageUsecase {
+func NewSearchPageUsecase(productOrm mysql.ProductOrm) SearchPageUsecase {
 	return &searchPageUsecase{productOrm: productOrm}
 }

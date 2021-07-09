@@ -1,4 +1,4 @@
-package pgsql
+package mysql
 
 type Courier struct {
 	ID                 int                   `json:"id"`

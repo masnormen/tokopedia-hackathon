@@ -1,4 +1,4 @@
-package pgsql
+package mysql
 
 type Seller struct {
 	ID              int        `json:"id"`

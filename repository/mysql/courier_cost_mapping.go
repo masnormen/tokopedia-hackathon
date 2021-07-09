@@ -1,4 +1,4 @@
-package pgsql
+package mysql
 
 type CourierCostMapping struct {
 	ID                      int      `json:"id"`
