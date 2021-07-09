@@ -8,8 +8,10 @@ import (
 	"github.com/masnormen/tokopedia-hackathon/usecase"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 func connectDB() *gorm.DB {
@@ -44,6 +46,39 @@ func migration(db *gorm.DB) error {
 	return nil
 }
 
+func seed(db *gorm.DB) {
+	for i := 1; i < 10; i++ {
+		index := strconv.Itoa(i)
+		products := make([]*pgsql.Product, 0)
+		for j := 1; j < 10; j++ {
+			product := &pgsql.Product{
+				Name:            "Sepatu " + strconv.Itoa(i*j),
+				Price:           rand.Intn(350000),
+				Rating:          3.5,
+				TotalSales:      rand.Intn(1200),
+				Weight:          1,
+				ProductImageURL: "https://cdn-3.tstatic.net/jualbeli/img/2020/7/2353564/1-26055081-Sepatu-Converse-CT-I-ALL-Star-OX-Black-Original-BNIB-Vietnam---Madiun.jpg",
+				SellerID:        i,
+			}
+			products = append(products, product)
+		}
+		seller := &pgsql.Seller{
+			ID:              i,
+			Name:            "Seller" + index,
+			Province:        "Jawa Barat",
+			City:            "Bekasi",
+			Address:         "Jl Candrabaga " + index,
+			Postcode:        "1760" + index,
+			Latitude:        "",
+			Longitude:       "",
+			ProfileImageURL: "https://pbs.twimg.com/profile_images/1407698877914902530/Uy5uB6Qb_400x400.jpg",
+			Badge:           "https://pbs.twimg.com/media/E2txKPEUcAEyjMB.jpg",
+			Product:         products,
+		}
+		db.Create(seller)
+	}
+}
+
 func main() {
 	db := connectDB()
 
@@ -52,7 +87,11 @@ func main() {
 		case "migrate":
 			migration(db)
 			break
+		case "seed":
+			seed(db)
+			break
 		}
+		return
 	}
 
 	r := mux.NewRouter()

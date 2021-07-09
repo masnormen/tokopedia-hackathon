@@ -10,6 +10,7 @@ type Product struct {
 	Price           int     `json:"price"`
 	Rating          float64 `json:"rating"`
 	TotalSales      int     `json:"total_sales"`
+	Weight          float64 `json:"weight"`
 	ProductImageURL string  `json:"product_image_url"`
 	SellerID        int     `json:"seller_id"`
 	Seller          *Seller `json:"seller"`
