@@ -1,7 +1,7 @@
 package pgsql
 
 type Buyer struct {
-	ID              int    `pg:",pk" json:"id"`
+	ID              int    `json:"id"`
 	Name            string `json:"name"`
 	Province        string `json:"province"`
 	City            string `json:"city"`

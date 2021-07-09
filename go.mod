@@ -3,6 +3,7 @@ module github.com/masnormen/tokopedia-hackathon
 go 1.14
 
 require (
-	github.com/go-pg/pg/v10 v10.10.1
 	github.com/gorilla/mux v1.8.0
+	gorm.io/driver/mysql v1.1.1
+	gorm.io/gorm v1.21.11
 )

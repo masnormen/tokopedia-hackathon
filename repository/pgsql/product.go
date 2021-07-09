@@ -1,17 +1,18 @@
 package pgsql
 
 import (
-	"github.com/go-pg/pg/v10"
+	"gorm.io/gorm"
 )
 
 type Product struct {
-	Id              int     `pg:",pk" json:"id"`
+	ID              int     `json:"id"`
 	Name            string  `json:"name"`
 	Price           int     `json:"price"`
 	Rating          float64 `json:"rating"`
 	TotalSales      int     `json:"total_sales"`
 	ProductImageURL string  `json:"product_image_url"`
-	SellerId        int     `json:"seller_id"`
+	SellerID        int     `json:"seller_id"`
+	Seller          *Seller `json:"seller"`
 }
 
 type ProductOrm interface {
@@ -19,13 +20,13 @@ type ProductOrm interface {
 }
 
 type productOrm struct {
-	db *pg.DB
+	db *gorm.DB
 }
 
 func (p *productOrm) Search() {
 	panic("implement me")
 }
 
-func NewProductOrm(db *pg.DB) ProductOrm {
+func NewProductOrm(db *gorm.DB) ProductOrm {
 	return &productOrm{db: db}
 }

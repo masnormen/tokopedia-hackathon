@@ -1,7 +1,7 @@
 package pgsql
 
 type Seller struct {
-	ID              int        `pg:",pk" json:"id"`
+	ID              int        `json:"id"`
 	Name            string     `json:"name"`
 	Province        string     `json:"province"`
 	City            string     `json:"city"`
@@ -11,5 +11,5 @@ type Seller struct {
 	Longitude       string     `json:"longitude"`
 	ProfileImageURL string     `json:"profile_image_url"`
 	Badge           string     `json:"badge"`
-	Product         []*Product `pg:"rel:has-many" json:"product"`
+	Product         []*Product `json:"product"`
 }

@@ -1,23 +1,24 @@
 package main
 
 import (
-	"github.com/go-pg/pg/v10"
-	"github.com/go-pg/pg/v10/orm"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/masnormen/tokopedia-hackathon/delivery"
 	"github.com/masnormen/tokopedia-hackathon/repository/pgsql"
 	"github.com/masnormen/tokopedia-hackathon/usecase"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"net/http"
 	"os"
 )
 
-func connectDB() *pg.DB {
-	db := pg.Connect(&pg.Options{
-		Addr:     ":5432",
-		User:     "user",
-		Password: "secret",
-		Database: "tco",
-	})
+func connectDB() *gorm.DB {
+	dsn := "root:root@tcp(127.0.0.1:3307)/tco?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
 	return db
 }
 
@@ -26,23 +27,20 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func migration(db *pg.DB) error {
-	models := []interface{}{
-		(*pgsql.Buyer)(nil),
-		(*pgsql.Courier)(nil),
-		(*pgsql.CourierCostMapping)(nil),
-		(*pgsql.Product)(nil),
-		(*pgsql.Seller)(nil),
+func migration(db *gorm.DB) error {
+	fmt.Println("Doing migration...")
+	err := db.AutoMigrate(
+		&pgsql.Buyer{},
+		&pgsql.Courier{},
+		&pgsql.CourierCostMapping{},
+		&pgsql.Product{},
+		&pgsql.Seller{},
+	)
+
+	if err != nil {
+		panic(err)
 	}
 
-	for _, model := range models {
-		err := db.Model(model).CreateTable(&orm.CreateTableOptions{
-			Temp: true,
-		})
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -66,5 +64,6 @@ func main() {
 	searchPageUsecase := usecase.NewSearchPageUsecase(productOrm)
 	delivery.NewSearchPageHandler(r, searchPageUsecase)
 
+	fmt.Print("Running...")
 	_ = http.ListenAndServe(":9090", r)
 }
