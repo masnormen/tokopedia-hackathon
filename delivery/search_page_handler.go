@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/masnormen/tokopedia-hackathon/usecase"
 	"net/http"
@@ -17,50 +18,47 @@ type searchPageHandler struct {
 }
 
 func (h *searchPageHandler) Search(w http.ResponseWriter, r *http.Request) {
+	v := r.URL.Query()
+
+	searchQuery := v.Get("q")
+	postCode := v.Get("from")
+
+	var resp SearchResponse
 	w.Header().Set("Content-Type", "application/json")
 
-	resp := SearchResponse{
-		Success: true,
-		Data: []SearchData{
-			{
-				ProductName:     "sabun dettol",
-				Price:           12000,
-				Rating:          4.5,
-				TotalSales:      122,
-				ProductImageURL: "google.com",
-				SellerName:      "Yudit",
-				SellerBadge:     "PRO",
-				SellerCity:      "Bekasi",
-				ShippingCourier: "JNE",
-				ShippingCost:    10000,
-			},
-		},
+	res, err := h.searchPageUsecase.Search(searchQuery, postCode)
+	if err != nil {
+		fmt.Errorf("[SearchPageHandler][Search] Error")
+		resp.Success = false
+		resp.Data = nil
+		json.NewEncoder(w).Encode(resp)
 	}
 
+	resp.Success = true
+	resp.Data = res
 	json.NewEncoder(w).Encode(resp)
 }
 
 func (h *searchPageHandler) Sort(w http.ResponseWriter, r *http.Request) {
+	v := r.URL.Query()
+
+	searchQuery := v.Get("q")
+	postCode := v.Get("from")
+
+	var resp SearchResponse
 	w.Header().Set("Content-Type", "application/json")
 
-	resp := SearchResponse{
-		Success: true,
-		Data: []SearchData{
-			{
-				ProductName:     "sabun dettol",
-				Price:           12000,
-				Rating:          4.5,
-				TotalSales:      122,
-				ProductImageURL: "google.com",
-				SellerName:      "Yudit",
-				SellerBadge:     "PRO",
-				SellerCity:      "Bekasi",
-				ShippingCourier: "JNE",
-				ShippingCost:    10000,
-			},
-		},
+	res, err := h.searchPageUsecase.Search(searchQuery, postCode)
+	if err != nil {
+		fmt.Errorf("[SearchPageHandler][Search] Error")
+		resp.Success = false
+		resp.Data = nil
+		json.NewEncoder(w).Encode(resp)
+		return
 	}
 
+	resp.Success = true
+	resp.Data = res
 	json.NewEncoder(w).Encode(resp)
 
 }
