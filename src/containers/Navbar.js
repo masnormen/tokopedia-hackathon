@@ -14,7 +14,7 @@ export const Navbar = () => {
       <div className="self-center flex flex-row flex-grow w-full px-8 pb-1 content-center justify-between bg-gray-100 text-gray-400">
         <div>
           <button className="flex flex-row items-center space-x-1">
-            <span className="icon-navbar phone" />
+            <i className="icon-navbar phone" />
             <span className="text-xs hover:text-xgreen">
               Download Tokopedia App
             </span>
@@ -72,7 +72,7 @@ export const Navbar = () => {
             type="submit"
             className="flex rounded-r-lg h-full w-10 bg-gray-100 items-center justify-center"
           >
-            <span className="icon-search" />
+            <i className="icon-search" />
           </button>
         </form>
 
@@ -80,13 +80,13 @@ export const Navbar = () => {
         <div className="flex flex-row divide-x divide-gray-300">
           <div className="flex flex-row px-4 space-x-4">
             <NavbarButton>
-              <span className="icon-navbar cart" />
+              <i className="icon-navbar cart" />
             </NavbarButton>
             <NavbarButton>
-              <span className="icon-navbar bell" />
+              <i className="icon-navbar bell" />
             </NavbarButton>
             <NavbarButton>
-              <span className="icon-navbar mail" />
+              <i className="icon-navbar mail" />
             </NavbarButton>
           </div>
           <div className="flex flex-row px-4 space-x-16">
@@ -136,7 +136,7 @@ export const Navbar = () => {
           <span className="flex flex-row space-x-1 items-center text-xs text-gray-700 hover:text-xgreen">
             <span>Dikirim ke</span>
             <span className="font-bold">Alamat Kos Malang Nourman Hajar</span>
-            <span className="icon-navbar arrowdown" />
+            <i className="icon-navbar arrowdown" />
           </span>
         </button>
       </div>

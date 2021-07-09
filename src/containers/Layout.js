@@ -23,9 +23,9 @@ export const Layout = ({ children }) => {
           className={classNames(
             {
               'bg-opacity-40': isSearchFocus,
-              'bg-opacity-0 hidden': !isSearchFocus,
+              'bg-opacity-0': !isSearchFocus,
             },
-            'fixed w-full h-full bg-black z-20 transition-all'
+            'fixed w-full h-full bg-black z-20 pointer-events-none transition-all'
           )}
         />
 

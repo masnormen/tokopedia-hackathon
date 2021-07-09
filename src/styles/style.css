@@ -3,7 +3,7 @@
   font-family: "Nunito Sans", -apple-system, sans-serif;
 }
 
-/* Navbar Icons */
+/* Icons */
 .icon-navbar {
   width: 20px;
   height: 20px;
@@ -12,24 +12,31 @@
   background-repeat: no-repeat;
   display: inline-block;
 }
+
 .icon-navbar.cart {
   background-position: 0% 0%;
 }
+
 .icon-navbar.mail {
   background-position: 20% 20%;
 }
+
 .icon-navbar.bell {
   background-position: 40% 40%;
 }
+
 .icon-navbar.phone {
   background-position: 60% 60%;
 }
+
 .icon-navbar.setting {
   background-position: 80% 80%;
 }
+
 .icon-navbar.arrowdown {
   background-position: 100% 100%;
 }
+
 .icon-search {
   width: 20px;
   height: 20px;
@@ -37,5 +44,34 @@
   background-size: 100%;
   background-position: center center;
   background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.icon-star {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  margin-right: 2px;
+  vertical-align: middle;
+  background-image: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/9527c778.svg);
+}
+.icon-product {
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  margin: 0px;
+  background: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/a0e991a5.svg) center center / contain no-repeat;
+  display: inline-block;
+}
+.icon-shop {
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  margin: 0px;
+  background: url(https://assets.tokopedia.net/assets-tokopedia-lite/v2/zeus/kratos/95b6947f.svg) center center / contain no-repeat;
   display: inline-block;
 }

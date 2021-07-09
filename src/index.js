@@ -9,6 +9,7 @@ import './styles/style.css';
 
 import { Home } from './views/Home';
 import { Layout, Navbar } from './containers';
+import { Search } from './views/Search';
 
 const App = () => (
   <Router>
@@ -17,6 +18,7 @@ const App = () => (
       <Layout>
         {/*Landing page*/}
         <Route exact path="/" component={Home} />
+        <Route path="/search" component={Search} />
       </Layout>
     </Switch>
   </Router>

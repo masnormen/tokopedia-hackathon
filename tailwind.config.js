@@ -26,5 +26,9 @@ module.exports = {
       pointerEvents: ['disabled'],
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'class',
+    }),
+  ],
 };

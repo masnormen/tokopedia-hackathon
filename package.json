@@ -46,6 +46,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@tailwindcss/forms": "^0.3.3",
     "autoprefixer": "^9",
     "eslint": "^7.28.0",
     "eslint-plugin-react": "^7.24.0",
