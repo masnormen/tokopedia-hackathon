@@ -6,7 +6,7 @@ import (
 )
 
 type SearchPageUsecase interface {
-	Search(searchQuery string, postCode string) ([]map[string]interface{}, error)
+	Search(searchQuery string, postCode string, sort string) ([]map[string]interface{}, error)
 	Sort()
 }
 
@@ -14,8 +14,8 @@ type searchPageUsecase struct {
 	productOrm pgsql.ProductOrm
 }
 
-func (s *searchPageUsecase) Search(searchQuery string, postCode string) ([]map[string]interface{}, error) {
-	res, err := s.productOrm.Search(searchQuery, postCode)
+func (s *searchPageUsecase) Search(searchQuery string, postCode string, sort string) ([]map[string]interface{}, error) {
+	res, err := s.productOrm.Search(searchQuery, postCode, sort)
 	if err != nil {
 		fmt.Errorf("[SearchPageUsecase][Search] Error")
 		return nil, err

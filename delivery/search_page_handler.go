@@ -22,11 +22,12 @@ func (h *searchPageHandler) Search(w http.ResponseWriter, r *http.Request) {
 
 	searchQuery := v.Get("q")
 	postCode := v.Get("from")
+	sort := v.Get("sort")
 
 	var resp SearchResponse
 	w.Header().Set("Content-Type", "application/json")
 
-	res, err := h.searchPageUsecase.Search(searchQuery, postCode)
+	res, err := h.searchPageUsecase.Search(searchQuery, postCode, sort)
 	if err != nil {
 		fmt.Errorf("[SearchPageHandler][Search] Error")
 		resp.Success = false
@@ -44,11 +45,12 @@ func (h *searchPageHandler) Sort(w http.ResponseWriter, r *http.Request) {
 
 	searchQuery := v.Get("q")
 	postCode := v.Get("from")
+	sort := v.Get("sort")
 
 	var resp SearchResponse
 	w.Header().Set("Content-Type", "application/json")
 
-	res, err := h.searchPageUsecase.Search(searchQuery, postCode)
+	res, err := h.searchPageUsecase.Search(searchQuery, postCode, sort)
 	if err != nil {
 		fmt.Errorf("[SearchPageHandler][Search] Error")
 		resp.Success = false
